@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>✨ Dresser Drawer</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ══════════════════════════════════════════════
+       MediaPipe Hand Tracking — loaded from CDN
+       (requires internet connection to load)
+       ══════════════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE BACKGROUND
+       The dark outer frame around the 16:9 game area
+       ══════════════════════════════════════════════ -->
+  <div id="page-bg">
+
+    <!-- ══════════════════════════════════════════════
+         GAME AREA — locked to 16:9 aspect ratio
+         Everything in the game lives inside this div
+         ══════════════════════════════════════════════ -->
+    <div id="game-area">
+
+
+      <!-- ── DRAWER BACKGROUND ──────────────────────────
+           The illustrated top-down dresser scene.
+           Swap src to change the background image. -->
+      <img id="drawer-bg" src="assets/drawer-bg.png" alt="Dresser drawer" />
+
+
+      <!-- ── DRAGGABLE OBJECTS ──────────────────────────
+           Each object is a div with an image inside.
+           JavaScript positions them at STARTING_POSITIONS.
+           Pinch gesture grabs and moves them.
+           To swap an image: change the src= attribute.
+           To add an object: copy a block and add an entry
+             in STARTING_POSITIONS inside js/main.js. -->
+
+      <div class="draggable-object" id="obj-ring">
+        <img src="assets/obj-ring.png" alt="ring" />
+      </div>
+
+      <div class="draggable-object" id="obj-brush">
+        <img src="assets/obj-brush.png" alt="hairbrush" />
+      </div>
+
+      <div class="draggable-object" id="obj-sunglasses">
+        <img src="assets/obj-sunglasses.png" alt="sunglasses" />
+      </div>
+
+      <div class="draggable-object" id="obj-perfume">
+        <img src="assets/obj-perfume.png" alt="perfume bottle" />
+      </div>
+
+      <div class="draggable-object" id="obj-envelope">
+        <img src="assets/obj-envelope.png" alt="envelope" />
+      </div>
+
+      <div class="draggable-object" id="obj-scrunchie">
+        <img src="assets/obj-scrunchie.png" alt="scrunchie" />
+      </div>
+
+      <div class="draggable-object" id="obj-lipstick">
+        <img src="assets/obj-lipstick.png" alt="lipstick" />
+      </div>
+
+
+      <!-- ── HAND CURSOR ────────────────────────────────
+           A small dot that follows the user's pinch point
+           on the main game area.
+           Shown/hidden and styled by JavaScript. -->
+      <div id="hand-cursor"></div>
+
+
+      <!-- ── HINT TEXT ──────────────────────────────────
+           Shown at launch until the user's hand is seen.
+           Hidden by JavaScript once hand is detected. -->
+      <div id="hint-text">✋ Show your hands · right hand pinches to grab · left fist rotates</div>
+
+      <!-- ── AUDIO HINT ─────────────────────────────────
+           Shown until the user's first click unlocks audio.
+           (Browsers require a gesture before playing sound.)
+           Removed automatically by audio.js on first click. -->
+      <div id="audio-hint">🔇 Click anywhere to enable sound</div>
+
+
+      <!-- ── RESET BUTTON ──────────────────────────────
+           Top-right corner.
+           onclick calls resetObjects() in main.js -->
+      <button id="reset-btn" onclick="resetObjects()">↺ reset</button>
+
+
+      <!-- ── CAMERA PREVIEW BOX ────────────────────────
+           Bottom-right corner.
+           Shows the live webcam feed + hand tracking dots. -->
+      <div id="camera-preview-box">
+
+        <!-- Live webcam feed (CSS-mirrored so it looks natural) -->
+        <video id="webcam" autoplay playsinline muted></video>
+
+        <!-- Hand tracking dots are drawn on this canvas,
+             layered on top of the video -->
+        <canvas id="hand-canvas" width="640" height="480"></canvas>
+
+        <!-- Status label -->
+        <div id="camera-status">📷 Starting…</div>
+
+      </div>
+
+
+    </div><!-- /game-area -->
+  </div><!-- /page-bg -->
+
+  <!-- audio.js must load before main.js (main.js calls its functions) -->
+  <script src="js/audio.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
